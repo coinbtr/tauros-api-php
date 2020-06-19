@@ -3,34 +3,37 @@
 declare(strict_types=1);
 
 namespace Tauros;
+
 use Tauros\Response;
 use Tauros\Exception\ConnectionError;
 use Tauros\Exception\ValidationError;
 
 # declare constant
-define("API_URL",          "https://api.tauros.io");
-// define("API_STAGING_URL",  "https://api.staging.tauros.io");
-define("API_STAGING_URL",  'http://coinbtr:8000');
+define("API_URL", 'https://api.tauros.io');
+define("API_STAGING_URL", 'https://api.staging.tauros.io');
 
 
 class TaurosApi
 {
+    protected $apiKey;
+    protected $apiSecret;
+    protected $staging;
 
-    public function __construct($apiKey, $apiSecret, $staging=true)
+    public function __construct($apiKey, $apiSecret, $staging=false)
     {
         $this->apiKey = $apiKey;
         $this->apiSecret = $apiSecret;
         $this->apiUrl = $staging ? API_STAGING_URL : API_URL;
     }
 
-    private function nonce()
+    public function nonce()
     {
         $microTime = explode(' ', microtime());
         $nonce = $microTime[1] . str_pad(substr($microTime[0], 2, 6), 6, '0');
         return $nonce;
     }
 
-    private function sing($data, $nonce, $method, $path)
+    public function sing($data, $nonce, $method, $path)
     {
         try {
             $data = http_build_query($data);
@@ -39,12 +42,12 @@ class TaurosApi
             $apiHmac = hash_hmac('sha512', $apiSha256, base64_decode($this->apiSecret), true);
             $signature = base64_encode($apiHmac);
             return $signature;
-        } catch (\Exception $th) {
+        } catch (Exception $th) {
             throw new ValidationError($th->getMessage());
         }
     }
 
-    private function request($path, $method='POST', $data=array(), $extras=array())
+    public function request($path, $method='POST', $data=array(), $extras=array())
     {
         $nonce = strval($this->nonce());
         $signature = $this->sing($data, $nonce, $method, $path);
@@ -58,6 +61,7 @@ class TaurosApi
         $headers = array_merge($headers, $extras);
 
         $options = array(
+            CURLOPT_SSL_VERIFYPEER => true,
             CURLOPT_FOLLOWLOCATION => false,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_HTTPHEADER => $headers,
@@ -104,4 +108,3 @@ class TaurosApi
         return $this->request($path, $method="DELETE");
     }
 }
-

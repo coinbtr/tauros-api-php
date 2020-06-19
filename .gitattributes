@@ -6,6 +6,7 @@
 /.gitignore export-ignore
 /.travis.yml export-ignore
 /phpunit.xml export-ignore
+/.php_cs.cache
 /README.md export-ignore
 /vendor-bin export-ignore
 /Dockerfile export-ignore
