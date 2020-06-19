@@ -1,5 +1,7 @@
 # Tauros api php module
 
+[![Build Status](https://travis-ci.org/coinbtr/tauros-api-php.svg?branch=master)](https://travis-ci.org/coinbtr/tauros-api-php)
+
 ## How To Install
 ```sh
 $ composer require tauros/tauros-api
