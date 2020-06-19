@@ -84,7 +84,7 @@ class TaurosApiTest extends TestCase
             "payload" => [
                 "coin" => "MXN",
                 "coin_symbol" => "$",
-                "cashback_coin" => NULL,
+                "cashback_coin" => null,
                 "notify_withdrawal" => false,
                 "notify_deposit" => false,
                 "notify_user_referred" => true,
@@ -169,7 +169,8 @@ class TaurosApiTest extends TestCase
         $this->assertSame($response->statusCode, 401);
     }
 
-    public function testSignMethod() : void {
+    public function testSignMethod() : void
+    {
         $signature = "yyH8Y/AytIjh9OfQ7xzK1ujM59eVe8nMXHAFFCrKrWkbNbEQcIkDTJFf7nfzgQV7LYeitbA0wkHqRRHOg+CVJQ==";
         $mockTaurosApi = Mockery::mock('Tauros\TaurosApi[nonce]', [$this->apiKey, $this->apiSecret, true])->makePartial();
         $mockTaurosApi->shouldReceive('nonce')->andReturn(123456);
