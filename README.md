@@ -10,8 +10,8 @@ $ composer require tauros/tauros-api
 <?php
 require __DIR__ . '/vendor/autoload.php';
 
-$apiKey = "f145b0bcdb6303ebc96ebd164e2387a2968fbbdc";
-$apiSecret = "64deee592e79a67b722cc746ce0ea9ab9bf639b55219b987875864d313103sv4";
+$apiKey = "You api key";
+$apiSecret = "you api secret";
 
 $taurosApi = new \Tauros\TaurosApi(
     $apiKey=$apiKey,
@@ -30,4 +30,5 @@ $data = array(
 $response = $taurosApi->post($path, $data);
 
 var_dump($response);
+?>
 ```
