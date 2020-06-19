@@ -141,7 +141,6 @@ class TaurosApiTest extends TestCase
 
     public function testMethodDelete() : void
     {
-
         $response = new Response;
         $response->statusCode = 204;
 
