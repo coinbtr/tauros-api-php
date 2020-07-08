@@ -170,7 +170,7 @@ class TaurosApiTest extends TestCase
 
     public function testSignMethod() : void
     {
-        $signature = "yyH8Y/AytIjh9OfQ7xzK1ujM59eVe8nMXHAFFCrKrWkbNbEQcIkDTJFf7nfzgQV7LYeitbA0wkHqRRHOg+CVJQ==";
+        $signature = "P8al8il4QoGDRyGEZ57WweG/BqMwq5dsKQmlimwOm+sScz1ntTjwbOompNPKaCr14jF7X9bP+3mjC7AbUR+C9A==";
         $mockTaurosApi = Mockery::mock('Tauros\TaurosApi[nonce]', [$this->apiKey, $this->apiSecret, true])->makePartial();
         $mockTaurosApi->shouldReceive('nonce')->andReturn(123456);
 
