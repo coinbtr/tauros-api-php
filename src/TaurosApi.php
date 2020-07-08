@@ -36,7 +36,7 @@ class TaurosApi
     public function sing($data, $nonce, $method, $path)
     {
         try {
-            $data = http_build_query($data);
+            $data = json_encode($data, JSON_FORCE_OBJECT);
             $message = $nonce . strtoupper($method) . $path . $data;
             $apiSha256 = hash('sha256', utf8_encode($message), true);
             $apiHmac = hash_hmac('sha512', $apiSha256, base64_decode($this->apiSecret), true);
