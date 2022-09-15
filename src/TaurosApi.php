@@ -49,8 +49,10 @@ class TaurosApi
 
     public function request($path, $method='POST', $data=array(), $extras=array())
     {
+		$path = $path;
+		// var_dump($path);
         $nonce = strval($this->nonce());
-        $signature = $this->sing($data, $nonce, $method, $path);
+        $signature = $this->sing($data=array(), $nonce, $method, $path);
 
         $headers = array(
             "Content-Type: application/json",
@@ -65,7 +67,7 @@ class TaurosApi
             CURLOPT_FOLLOWLOCATION => false,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_HTTPHEADER => $headers,
-            CURLOPT_POSTFIELDS => json_encode($data, JSON_FORCE_OBJECT),
+            CURLOPT_POSTFIELDS =>  json_encode($data, JSON_FORCE_OBJECT),
             CURLOPT_CUSTOMREQUEST => strtoupper($method),
         );
 
@@ -83,9 +85,9 @@ class TaurosApi
         return $response;
     }
 
-    public function get($path)
+    public function get($path, $params=array())
     {
-        return $this->request($path, $method="GET");
+        return $this->request($path, $method="GET", $data=$params);
     }
 
     public function post($path, $data=array())
