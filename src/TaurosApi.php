@@ -47,12 +47,10 @@ class TaurosApi
         }
     }
 
-    public function request($path, $method='POST', $data=array(), $extras=array())
+    public function request($path, $method='POST', $data=array(), $extras=array(), $params=array())
     {
-		$path = $path;
-		// var_dump($path);
         $nonce = strval($this->nonce());
-        $signature = $this->sing($data=array(), $nonce, $method, $path);
+        $signature = $this->sing($data, $nonce, $method, $path);
 
         $headers = array(
             "Content-Type: application/json",
@@ -67,12 +65,17 @@ class TaurosApi
             CURLOPT_FOLLOWLOCATION => false,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_HTTPHEADER => $headers,
-            CURLOPT_POSTFIELDS =>  json_encode($data, JSON_FORCE_OBJECT),
+            CURLOPT_POSTFIELDS => json_encode($data, JSON_FORCE_OBJECT),
             CURLOPT_CUSTOMREQUEST => strtoupper($method),
         );
 
-        $handler = curl_init($this->apiUrl . $path);
+        $handler = curl_init();
         curl_setopt_array($handler, $options);
+		if (strtoupper($method) === 'GET') {
+			curl_setopt($handler, CURLOPT_URL, $this->apiUrl . $path . '?' . http_build_query($params));
+		} else {
+			curl_setopt($handler, CURLOPT_URL, $this->apiUrl . $path);
+		}
         $result = curl_exec($handler);
         if ($result === false) {
             throw new ConnectionError(curl_error($handler), 1);
@@ -87,7 +90,7 @@ class TaurosApi
 
     public function get($path, $params=array())
     {
-        return $this->request($path, $method="GET", $data=$params);
+        return $this->request($path, $method="GET",  $data=array(), $extras=array(), $params=$params);
     }
 
     public function post($path, $data=array())
