@@ -10,7 +10,7 @@ use Tauros\Exception\ValidationError;
 
 # declare constant
 define("API_URL", 'https://api.tauros.io');
-define("API_STAGING_URL", 'https://api.staging.tauros.io');
+define("API_STAGING_URL", 'https://api-staging.tauros.io');
 
 
 class TaurosApi
